@@ -580,7 +580,10 @@ function setActive(chip){
   if(!chip||chip.classList.contains('active'))return;
   document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
   chip.classList.add('active');
-  chip.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+  // center the active chip WITHIN its own horizontal strip only — never scroll the page vertically
+  const _strip=document.getElementById('cats');
+  if(_strip){const _sr=_strip.getBoundingClientRect(),_cr=chip.getBoundingClientRect();
+    _strip.scrollBy({left:(_cr.left+_cr.width/2)-(_sr.left+_sr.width/2),behavior:'smooth'});}
   requestAnimationFrame(movePill);
 }
 const spy=new IntersectionObserver((es)=>{
